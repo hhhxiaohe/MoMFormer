@@ -426,5 +426,8 @@ if __name__ == "__main__":
     img2 = torch.ones([2, 3, 512, 512]).cuda()
     img = [img1, img2]
     net = MoMFormer().cuda()
-    pred = net(img)
-    print('pred.shape=', pred)
+    if isinstance(pred, tuple):
+        for i, p in enumerate(pred):
+            print(f'pred[{i}].shape:', p.shape)
+    else:
+        print('pred.shape:', pred.shape)
