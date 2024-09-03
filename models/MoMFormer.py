@@ -8,7 +8,7 @@ from model.swinv2 import SwinTransformerV2
 from model.ConvNeXtv2 import Block as convnextv2
 
 
-class HeNet(nn.Module):
+class MoMFormer(nn.Module):
     def __init__(self,
                  n_classes=4,
                  img_size=512,
@@ -17,7 +17,7 @@ class HeNet(nn.Module):
                  decode_channels=256,
                  in_chans=(3, 3),
                  drop=0.1):
-        super(HeNet, self).__init__()
+        super(MoMFormer, self).__init__()
         self.aux = True
         self.n_classes = n_classes
         self.branch_1 = SwinTransformerV2(img_size=img_size, in_chans=in_chans[0], embed_dim=dim, depths=depths)
@@ -421,10 +421,13 @@ class Decoder(nn.Module):
             return x
 
 
-# if __name__ == "__main__":
-#     img1 = torch.ones([2, 3, 512, 512]).cuda()
-#     img2 = torch.ones([2, 3, 512, 512]).cuda()
-#     img = [img1, img2]
-#     net = HeNet().cuda()
-#     pred = net(img)
-#     print('pred=', pred)
+if __name__ == "__main__":
+    img1 = torch.ones([2, 3, 512, 512]).cuda()
+    img2 = torch.ones([2, 3, 512, 512]).cuda()
+    img = [img1, img2]
+    net = MoMFormer().cuda()
+    if isinstance(pred, tuple):
+        for i, p in enumerate(pred):
+            print(f'pred[{i}].shape:', p.shape)
+    else:
+        print('pred.shape:', pred.shape)
